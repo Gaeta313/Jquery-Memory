@@ -217,8 +217,6 @@ $(() => {
         } else {
             for (let j = 0; j < 16; j++) {
                 if ($(`#${j}`).children().attr('src') == confronto[0] && ($(`#${j}`).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
-                    console.log($(casellaConfronto[0]).attr('id'));
-                    console.log(j);
                     $(`#${j}`).trigger('click');
                 }
             }
@@ -230,8 +228,6 @@ $(() => {
         } else {
             for (let j = 0; j < 32; j++) {
                 if ($(`#${j}`).children().attr('src') == confronto[0] && ($(`#${j}`).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
-                    console.log($(casellaConfronto[0]).attr('id'));
-                    console.log(j);
                     $(`#${j}`).trigger('click');
                 }
             }
