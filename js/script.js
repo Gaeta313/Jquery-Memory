@@ -91,6 +91,9 @@ $(() => {
     }
     var immaginiShuff;
 
+    //invocazione di inizio gioco al caricamento della pagina
+    startGame(facile);
+
     //funzione start game il parametro 'diff' è la difficoltà(facile o difficile)
     function startGame(diff) {
         //creazione bottoni
@@ -98,14 +101,7 @@ $(() => {
         $('<button>Difficile</button>').on('click', giocaDifficile).appendTo('.container');
         $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click', diff.aiuto).appendTo('.container');
         $('<p>*Nota per il proff, immagino non ne possa più di giocare a memory, con la funzione aiuto ho voluto aiutarla</p>').appendTo('.container');
-        $('button').css({
-            'display': 'inline-block',
-            'margin': '10px',
-            'background-color': 'cadetblue'
-        });
-        $('#aiuto').css({
-            'background-color': 'yellow'
-        });
+
         //creazione display confronti
         $('<h2>Numero confronti : <span></span></h2>').appendTo('.container');
         //creazione table
@@ -132,48 +128,33 @@ $(() => {
             confronti(diff);
         })
 
-        //css classe tavolo
+        //css dinamico classe tavolo
         $('.tavolo').css({
             'width': diff.widthT + 'px',
-            'height': '600px',
-            'margin': 'auto',
-            'display': 'flex',
-            'flex-wrap': 'wrap',
-            'justify-content': 'space-evenly',
         });
-        // css classe casella
+        // css dinamico classe casella
         $('.casella').css({
             'width': diff.width + '%',
-            'height': '23%',
-            'background-color': 'cadetblue',
-            'border': '1px solid black',
-            'box-sizing': 'border-box'
+        });
 
-        });
-        //css immagini
-        $('img').css({
-            'width': '100%',
-            'height': '100%',
-            'position': 'relative'
-        });
     }
-    //invocazione di inizio gioco al caricamento della pagina
-    startGame(facile);
 
     function confronti(diff) {
         if (index == 1) {
             contatore++;
             $('span').text(contatore);
             if (confronto[0] !== confronto[1]) {
+                $('.casella').addClass('disabled');
                 setTimeout(function () {
                     $(casellaConfronto[1]).children().hide();
                     $(casellaConfronto[0]).children().hide();
-                    $(casellaConfronto[0]).removeClass('disabled');
-                    $(casellaConfronto[1]).removeClass('disabled');
+                    $('.casella').removeClass('disabled');
                     index = 0;
                 }, 800);
             }
             else {
+                $(casellaConfronto[1]).addClass('blocca');
+                $(casellaConfronto[0]).addClass('blocca');
                 $(casellaConfronto[0]).children().animate({
                     'left': '10px'
                 }, 200).animate({
@@ -194,21 +175,61 @@ $(() => {
             index++;
         }
         if (trovato == diff.trovato) {
-            $(`<h2 class='banner'>Hai vinto, vuoi giocare ancora ?</h2>`).appendTo('.container');
-            $(`<button>Facile</button>`).on('click', giocaFacile).appendTo('.container');
-            $(`<button>Difficile</button>`).on('click', giocaDifficile).appendTo('.container');
-            //css button e banner
-            $('button').css({
-                'display': 'inline-block',
-                'margin': 'auto',
-                'background-color': 'cadetblue'
-            });
-            $('.banner').css({
-                'text-align': 'center'
-            });
+            vittoria();
         }
     }
 
+
+    function vittoria() {
+        setTimeout(() => {
+            $('h2,p,button').hide(1000);
+            $('.casella').each(function () {
+                intervallo = setInterval(() => {
+                    $(this).css({
+                        'transform': `rotate(${Math.round(Math.random() * 360)}deg)`});
+                }, 100);
+            });
+            $('.casella').each(function () {
+                setTimeout(() => {
+                }, Math.round(Math.random() * 1000));
+                let caso = Math.round(Math.random() * 20)
+                if (caso <= 10) {
+                    if (caso <= 5) {
+                        $(this).delay(1000).animate({
+                            left: '+=1500px'
+                        }, 2000)
+                    } else {
+                        $(this).delay(1000).animate({
+                            right: '+=1500px'
+                        }, 2000)
+                    }
+                }
+                else {
+                    if (caso >= 16) {
+                        $(this).delay(1000).animate({
+                            top: '+=1500px'
+                        }, 2000)
+                    }
+                    else {
+                        $(this).delay(1000).animate({
+                            bottom: '+=1500px'
+                        }, 2000, () => {
+                            clearInterval(intervallo);
+                            $('.container').text('');
+                            $(`<h2 class='banner'>Hai vinto, vuoi giocare ancora ?</h2>`).appendTo('.container');
+                            $('h2').css({
+                                marginTop: '50vh'
+                            })
+                            $(`<button>Facile</button>`).on('click', giocaFacile).appendTo('.container');
+                            $(`<button>Difficile</button>`).on('click', giocaDifficile).appendTo('.container');
+                            $('h2,button').hide();
+                            $('h2,button').show(2000);
+                        })
+                    }
+                }
+            })
+        }, 1500)
+    }
 
 
     function aiutoFacile() {
@@ -252,6 +273,5 @@ $(() => {
         contatore = 0;
         startGame(diff);
     }
-
 
 })
