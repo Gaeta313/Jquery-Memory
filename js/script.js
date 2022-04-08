@@ -100,7 +100,6 @@ $(() => {
     //funzione startGame il parametro 'diff' è la difficoltà(facile o difficile)
     function startGame(diff) {
         //creazione bottoni
-        $(document).off('keydown');
         $('<button>Facile</button>').on('click', giocaFacile).appendTo('.container');
         $('<button>Difficile</button>').on('click', giocaDifficile).appendTo('.container');
         $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click', aiuto).appendTo('.container');
@@ -262,6 +261,7 @@ $(() => {
 
     //invocata all'interno delle funzioni precedenti
     function giocaAncora(diff) {
+        $(document).off('keydown');
         $('.container').text('');
         confronto = [];
         casellaConfronto = [];
