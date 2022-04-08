@@ -1,4 +1,6 @@
 
+/// NOTA PER IL PROFF--- le ho scritto dei commenti per aggievolarle la comprensione del codice
+
 
 $(() => {
     //creazione set di immagini
@@ -61,8 +63,7 @@ $(() => {
             this.dimensione = dimensione;
             this.width = width;
             this.trovato = trovato;
-            this.widthT = widthT;
-            
+            this.widthT = widthT; 
         }
     }
 
@@ -71,12 +72,14 @@ $(() => {
 
 
     // dichiarazione variabili
-    var confronto = [];
-    var casellaConfronto = [];
-    var index = 0;
-    var trovato = 0;
-    var contatore = 0;
+    var confronto = [];         //conterrà l'attributo src delle immagini da confrontare
+    var casellaConfronto = [];  //conterrà gli elementi casella che sono stati girati
+    var index = 0;              //l'indice degli array
+    var trovato = 0;            //il numero di coppie trovate
+    var contatore = 0;          //il numero di confronti fatti dal giocatore
+    var immaginiShuff;          //l'array mischiato 
 
+    //funzione per creare una array mischiato
     function shuffle(a) {
         var currentIndex = a.length;
         var temporaryValue, randomIndex;
@@ -89,28 +92,27 @@ $(() => {
         }
         return a;
     }
-    var immaginiShuff;
+    
 
     //invocazione di inizio gioco al caricamento della pagina
     startGame(facile);
 
-    //funzione start game il parametro 'diff' è la difficoltà(facile o difficile)
+    //funzione startGame il parametro 'diff' è la difficoltà(facile o difficile)
     function startGame(diff) {
         //creazione bottoni
         $('<button>Facile</button>').on('click', giocaFacile).appendTo('.container');
         $('<button>Difficile</button>').on('click', giocaDifficile).appendTo('.container');
         $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click',aiuto).appendTo('.container');
         $('<p>*Nota per il proff, immagino non ne possa più di giocare a memory, con la funzione aiuto ho voluto aiutarla</p>').appendTo('.container');
-
         //creazione display confronti
         $('<h2>Numero confronti : <span></span></h2>').appendTo('.container');
-        //creazione table
+        //creazione tavolo di gioco
         $(`<div class='tavolo'></div>`).appendTo('.container');
 
         //creazione array mischiato tramite shuffle
         immaginiShuff = shuffle(diff.setImmagini);
 
-        //creazione caselle  con id dinamico e immagini
+        //creazione caselle  con id dinamico e immagini(nascoste)
         for (let id = 0; id < diff.dimensione; id++) {
             $(`<div class='casella' id =${id}></div>`).appendTo('.tavolo');
             let src = immaginiShuff[id];
@@ -128,21 +130,24 @@ $(() => {
             confronti(diff);
         })
 
-        //css dinamico classe tavolo
+        //css dinamico(in base alla difficoltà) classe tavolo
         $('.tavolo').css({
             'width': diff.widthT + 'px',
         });
-        // css dinamico classe casella
+        // css dinamico(in base alla difficoltà) classe casella
         $('.casella').css({
             'width': diff.width + '%',
         });
 
     }
 
+    //questa funzione risolve tutti i casi dei confronti tra le carte girate,viene invocata ad ogni click sulle caselle
     function confronti(diff) {
+        //se sono state girate due carte
         if (index == 1) {
             contatore++;
             $('span').text(contatore);
+            //se sono diverse
             if (confronto[0] !== confronto[1]) {
                 $('.casella').addClass('disabled');
                 setTimeout(function () {
@@ -152,6 +157,7 @@ $(() => {
                     index = 0;
                 }, 800);
             }
+            //se sono uguali
             else {
                 $(casellaConfronto[1]).addClass('blocca');
                 $(casellaConfronto[0]).addClass('blocca');
@@ -165,26 +171,27 @@ $(() => {
                 }, 200).animate({
                     'left': '0px'
                 }, 200);
-
                 index = 0;
                 confronto = [];
                 casellaConfronto = [];
                 trovato++;
             }
+        //se è stata girata solo una carta    
         } else {
             index++;
         }
+        //se tutte le coppie sono state trovate
         if (trovato == diff.trovato) {
             vittoria();
         }
     }
 
-
+    //questa funzione viene invocata in caso di vittoria, genera tutta una serie di animazioni con jquery
     function vittoria() {
         setTimeout(() => {
             $('h2,p,button').hide(1000);
             $('.casella').each(function () {
-                intervallo = setInterval(() => {
+                setInterval(() => {
                     $(this).css({
                         'transform': `rotate(${Math.round(Math.random() * 360)}deg)`
                     });
@@ -215,7 +222,6 @@ $(() => {
                         $(this).delay(1000).animate({
                             bottom: '+=1500px'
                         }, 2000, () => {
-                            clearInterval(intervallo);
                             $('.container').text('');
                             $(`<h2 class='banner'>Hai vinto, vuoi giocare ancora ?</h2>`).appendTo('.container');
                             $('h2').css({
@@ -232,7 +238,7 @@ $(() => {
         }, 1500)
     }
 
-
+    //questa funzione, quando invocata tramite bottone trova la gemella della carta girata
     function aiuto() {
         if (index == 0) {
             alert('seleziona prima una carta');
@@ -246,15 +252,16 @@ $(() => {
     }
 
 
-
+    //invocata al click del pulsante"Facile"
     function giocaFacile() {
         giocaAncora(facile);
     }
+    //invocata al click del pulsante"Difficile"
     function giocaDifficile() {
         giocaAncora(difficile);
     }
 
-
+    //invocata all'interno delle funzioni precedenti
     function giocaAncora(diff) {
         $('.container').text('');
         confronto = [];
