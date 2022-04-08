@@ -63,12 +63,12 @@ $(() => {
             this.dimensione = dimensione;
             this.width = width;
             this.trovato = trovato;
-            this.widthT = widthT; 
+            this.widthT = widthT;
         }
     }
 
-    let facile = new Difficolta(immagini, 16, 23, 8, 600 );
-    let difficile = new Difficolta(immaginiD, 32, 12, 16, 1200 );
+    let facile = new Difficolta(immagini, 16, 23, 8, 600);
+    let difficile = new Difficolta(immaginiD, 32, 12, 16, 1200);
 
 
     // dichiarazione variabili
@@ -92,7 +92,7 @@ $(() => {
         }
         return a;
     }
-    
+
 
     //invocazione di inizio gioco al caricamento della pagina
     startGame(facile);
@@ -100,10 +100,12 @@ $(() => {
     //funzione startGame il parametro 'diff' è la difficoltà(facile o difficile)
     function startGame(diff) {
         //creazione bottoni
+        $(document).off('keydown');
         $('<button>Facile</button>').on('click', giocaFacile).appendTo('.container');
         $('<button>Difficile</button>').on('click', giocaDifficile).appendTo('.container');
-        $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click',aiuto).appendTo('.container');
-        $('<p>*Nota per il proff, immagino non ne possa più di giocare a memory, con la funzione aiuto ho voluto aiutarla</p>').appendTo('.container');
+        $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click', aiuto).appendTo('.container');
+        $(document).on('keydown', aiuto);
+        $('<p>*Nota per il proff, immagino non ne possa più di giocare a memory, con la funzione aiuto ho voluto aiutarla,<br> può cliccare sul bottone, o premere il tasto \'h\' sulla tastiera</p>').appendTo('.container');
         //creazione display confronti
         $('<h2>Numero confronti : <span></span></h2>').appendTo('.container');
         //creazione tavolo di gioco
@@ -170,7 +172,7 @@ $(() => {
                 casellaConfronto = [];
                 trovato++;
             }
-        //se è stata girata solo una carta    
+            //se è stata girata solo una carta    
         } else {
             index++;
         }
@@ -182,6 +184,7 @@ $(() => {
 
     //questa funzione viene invocata in caso di vittoria, genera tutta una serie di animazioni con jquery
     function vittoria() {
+        $(document).off('keydown');
         setTimeout(() => {
             $('h2,p,button').hide(1000);
             $('.casella').each(function () {
@@ -232,16 +235,18 @@ $(() => {
         }, 1500)
     }
 
-    //questa funzione, quando invocata tramite bottone trova la gemella della carta girata
-    function aiuto() {
-        if (index == 0) {
-            alert('seleziona prima una carta');
-        } else {
-            $('.casella').each(function(){
-                if ($(this).children().attr('src') == confronto[0] && ($(this).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
-                    $(this).trigger('click');
-                }
-            });
+    //questa funzione, quando invocata tramite bottone(o tasto h) trova la gemella della carta girata
+    function aiuto(e) {
+        if (e.key == 'h' || e.type == 'click') {
+            if (index == 0) {
+                alert('seleziona prima una carta');
+            } else {
+                $('.casella').each(function () {
+                    if ($(this).children().attr('src') == confronto[0] && ($(this).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
+                        $(this).trigger('click');
+                    }
+                });
+            }
         }
     }
 
