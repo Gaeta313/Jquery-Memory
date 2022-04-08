@@ -108,10 +108,8 @@ $(() => {
         $('<h2>Numero confronti : <span></span></h2>').appendTo('.container');
         //creazione tavolo di gioco
         $(`<div class='tavolo'></div>`).appendTo('.container');
-
         //creazione array mischiato tramite shuffle
         immaginiShuff = shuffle(diff.setImmagini);
-
         //creazione caselle  con id dinamico e immagini(nascoste)
         for (let id = 0; id < diff.dimensione; id++) {
             $(`<div class='casella' id =${id}></div>`).appendTo('.tavolo');
@@ -119,8 +117,6 @@ $(() => {
             $(`<img src=${src}>`).appendTo(`#${id}`);
         }
         $('img').hide();
-
-
         // event onclick sulle caselle
         $('.casella').on('click', function () {
             $(this).children().show();
@@ -129,7 +125,6 @@ $(() => {
             casellaConfronto[index] = this;
             confronti(diff);
         })
-
         //css dinamico(in base alla difficoltà) classe tavolo
         $('.tavolo').css({
             'width': diff.widthT + 'px',
@@ -138,7 +133,6 @@ $(() => {
         $('.casella').css({
             'width': diff.width + '%',
         });
-
     }
 
     //questa funzione risolve tutti i casi dei confronti tra le carte girate,viene invocata ad ogni click sulle caselle
