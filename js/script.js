@@ -56,18 +56,18 @@ $(() => {
     ];
     //creazione livelli di difficoltà
     class Difficolta {
-        constructor(immagini, dimensione, width, trovato, widthT, aiuto) {
+        constructor(immagini, dimensione, width, trovato, widthT) {
             this.setImmagini = immagini;
             this.dimensione = dimensione;
             this.width = width;
             this.trovato = trovato;
             this.widthT = widthT;
-            this.aiuto = aiuto;
+            
         }
     }
 
-    let facile = new Difficolta(immagini, 16, 23, 8, 600, aiutoFacile);
-    let difficile = new Difficolta(immaginiD, 32, 12, 16, 1200, aiutoDifficle);
+    let facile = new Difficolta(immagini, 16, 23, 8, 600 );
+    let difficile = new Difficolta(immaginiD, 32, 12, 16, 1200 );
 
 
     // dichiarazione variabili
@@ -99,7 +99,7 @@ $(() => {
         //creazione bottoni
         $('<button>Facile</button>').on('click', giocaFacile).appendTo('.container');
         $('<button>Difficile</button>').on('click', giocaDifficile).appendTo('.container');
-        $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click', diff.aiuto).appendTo('.container');
+        $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click',aiuto).appendTo('.container');
         $('<p>*Nota per il proff, immagino non ne possa più di giocare a memory, con la funzione aiuto ho voluto aiutarla</p>').appendTo('.container');
 
         //creazione display confronti
@@ -186,7 +186,8 @@ $(() => {
             $('.casella').each(function () {
                 intervallo = setInterval(() => {
                     $(this).css({
-                        'transform': `rotate(${Math.round(Math.random() * 360)}deg)`});
+                        'transform': `rotate(${Math.round(Math.random() * 360)}deg)`
+                    });
                 }, 100);
             });
             $('.casella').each(function () {
@@ -232,28 +233,18 @@ $(() => {
     }
 
 
-    function aiutoFacile() {
+    function aiuto() {
         if (index == 0) {
             alert('seleziona prima una carta');
         } else {
-            for (let j = 0; j < 16; j++) {
-                if ($(`#${j}`).children().attr('src') == confronto[0] && ($(`#${j}`).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
-                    $(`#${j}`).trigger('click');
+            $('.casella').each(function(){
+                if ($(this).children().attr('src') == confronto[0] && ($(this).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
+                    $(this).trigger('click');
                 }
-            }
+            });
         }
     }
-    function aiutoDifficle() {
-        if (index == 0) {
-            alert('seleziona prima una carta');
-        } else {
-            for (let j = 0; j < 32; j++) {
-                if ($(`#${j}`).children().attr('src') == confronto[0] && ($(`#${j}`).attr('id') !== $(casellaConfronto[0]).attr('id'))) {
-                    $(`#${j}`).trigger('click');
-                }
-            }
-        }
-    }
+
 
 
     function giocaFacile() {
