@@ -58,17 +58,16 @@ $(() => {
     ];
     //creazione livelli di difficoltà
     class Difficolta {
-        constructor(immagini, dimensione, width, trovato, widthT) {
+        constructor(immagini, dimensione, trovato, widthT) {
             this.setImmagini = immagini;
             this.dimensione = dimensione;
-            this.width = width;
             this.trovato = trovato;
             this.widthT = widthT;
         }
     }
 
-    let facile = new Difficolta(immagini, 16, 23, 8, 600);
-    let difficile = new Difficolta(immaginiD, 32, 12, 16, 1200);
+    let facile = new Difficolta(immagini, 16, 8, 600);
+    let difficile = new Difficolta(immaginiD, 32, 16, 1200);
 
 
     // dichiarazione variabili
@@ -128,11 +127,7 @@ $(() => {
         })
         //css dinamico(in base alla difficoltà) classe tavolo
         $('.tavolo').css({
-            'width': diff.widthT + 'px',
-        });
-        // css dinamico(in base alla difficoltà) classe casella
-        $('.casella').css({
-            'width': diff.width + '%',
+            'width': diff.widthT + 'px'
         });
     }
 
