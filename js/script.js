@@ -167,11 +167,9 @@ $(() => {
                     'left': '0px'
                 }, 200);
                 index = 0;
-                confronto = [];
-                casellaConfronto = [];
                 trovato++;
             }
-            //se è stata girata solo una carta    
+        //se è stata girata solo una carta    
         } else {
             index++;
         }
