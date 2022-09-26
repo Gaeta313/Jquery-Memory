@@ -7,6 +7,12 @@
     cursor: wait;
 }
 
+body{
+    background-image: url("/img/151.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
 .tavolo{
     height: 600px;
     margin: auto;

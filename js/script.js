@@ -103,7 +103,7 @@ $(() => {
         $('<button>Difficile</button>').on('click', giocaDifficile).appendTo('.container');
         $('<br><button id=' + 'aiuto' + '>Aiuto</button>').on('click', aiuto).appendTo('.container');
         $(document).on('keydown', aiuto);
-        $('<p>*Nota per il proff, immagino non ne possa più di giocare a memory, con la funzione aiuto ho voluto aiutarla,<br> può cliccare sul bottone, o premere il tasto \'h\' sulla tastiera</p>').appendTo('.container');
+        $('<p>*Nota Funzione Aiuto <br> Cliccare sul bottone, o premere il tasto \'h\' sulla tastiera</p>').appendTo('.container');
         //creazione display confronti
         $('<h2>Numero confronti : <span></span></h2>').appendTo('.container');
         //creazione tavolo di gioco
